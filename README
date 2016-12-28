@@ -1,0 +1,86 @@
+
+INTRO
+
+Bibcursed is a simple program to make life a little easier when using
+BibTeX bibliographies. It currently provides these main functions:
+
+  - Adding references to your bibliography. This is done with prompts so
+    templates for the different entries (article, proceedings, etc) do
+    not have to be remembered. Error checking is used so that the required
+    fields have to be supplied, and incorrect fields cannot be entered.
+    New entries are inserted into the 'correct' place in the BibTeX file
+  - Clean and easy removal of entries
+  - Viewing of entries and changing of fields
+  - Easy searching of entries, including search by field
+
+This project used to be called 'Bibtool', but the name has been changed
+to avoid a clash with a previous BibTeX tool with the same name.
+
+Wish list for future versions:
+
+  - Beautification and error checking of BibTeX files
+  - Distributed servers enabling many users to use the same BibTeX file,
+    either locally or on a remote machine. Multi-user security and
+    protection is provided
+  - Configurable preferences
+
+
+INSTALLATION
+
+    Please see the included INSTALL file
+
+
+USAGE
+
+To start the program, simply specify your BibTeX file on the command line,
+like so:
+
+    bibcursed thesis.bib
+
+The main screen will appear. This will show the number of entries in the
+BibTeX database in the to right corner. Selectable options will be listed
+near the middle of the screen.
+
+To select an option, press the key highlighted in the option line. For
+example, the line 'Delete an entry' features the first 'd' in bold. Pressing
+the 'd' key will select that option.
+
+The search and query option enables you to select one of several fields to
+search in. To find all references written by 'Jones' for example, you would
+press 'a' to choose 'Author', then type in 'Jones'. This procedure is
+similar for all other fields. All of the references containing the chosen
+author name will then be listed. The list is formed of the record name
+followed by the entry for author. Remember that bibtool is *always* case
+sensitive when searching!
+
+Using the record name found with the search option, the entry can then be
+deleted using the delete option, or changed with the change option (both
+accessed from the main screen). Note that to use these options it is
+necessary to remember the record name of the desired record, so keep a note
+of it!
+
+It is also possible to add a new entry to the database. To do this, press
+'a' from the main screen. You must then choose the type of entry to add
+(usually this is 'article' or 'conference') by entering the relevant
+number or letter listed next to the reference type. When a reference type
+has been selected the valid fields for that type are listed. You *must*
+enter something for the fields in bold - the others are optional. Once
+all of the required fields are entered, pressing Z will go to the next
+screen. Here you must enter a name for the reference. This must be unique,
+and it is a good idea to follow the same naming convention for all of your
+reference (author and year is usually a good idea, eg 'jones1999'). The
+entry will then be inserted into the BibTeX file in an alphabetically sorted
+position, ie 'jones1999' would go between 'ike1993' and 'king1997'. If you
+change your mind about adding the record, you can delete it with the delete
+option from the main menu.
+
+Note that alterations to the BibTeX file are made to a temporary file first.
+If there is a problem (such as a crash or power failure) while the program
+is running, the only data that could be lost is the current change. However,
+it is always a good idea to keep several backups of important files in
+different locations, just in case.
+
+DISTRIBUTION
+
+GNU GPL applies - see http://www.gnu.org
+

@@ -1,0 +1,22 @@
+
+INSTALLATION
+
+Installation is simple...
+
+  - There are two versions of the makefile. One is for systems with ncurses
+    (such as Linux and FreeBSD), while the other is for systems with
+    curses, such as Solaris. If you are using an ncuses system, rename
+    Makefile.ncurses to 'Makefile'. If you are using a curses-based
+    system, do the same with the Makefile.curses file.
+  - Edit the makefile and change INSTDIR to your chosen binary installation
+    directory. If you do not have root permissions, this must be somewhere
+    you have write access, such as your home directory. Ideally this location
+    would be in your PATH.
+  - Change the MANDIR to point to your man page directory. Again, if you do
+    not have root permissions this must be somewhere you can write to
+  - type 'make' to compile
+  - type 'make install' to install the binary and man page. This step is not
+    strictly necessary, as you can just copy the files where you like
+
+
+

@@ -1,0 +1,30 @@
+# Generic UNIX makefile (has no ncurses library)
+# version $id$
+
+all: bibcursed
+
+# Where to install
+INSTDIR=/usr/local/bin
+MANDIR=/usr/man/man1
+
+bibcursed: bibcursed.c
+	gcc -O -o bibcursed bibcursed.c -lcurses
+
+install: bibcursed
+	@if [ -d $(INSTDIR) ]; \
+		then \
+                echo "Installing binary in $(INSTDIR)";\
+		cp bibtool $(INSTDIR);\
+		chmod 755 $(INSTDIR)/bibtool;\
+	else \
+		echo "Sorry, $(INSTDIR) does not exist";\
+	fi
+	@if [ -d $(MANDIR) ]; \
+		then \
+		echo "Installing manual page in $(MANDIR)";\
+		cp bibcursed.1 $(MANDIR);\
+		chmod 644 $(MANDIR)/bibcursed.1;\
+	else \
+		echo "$(MANDIR) does not exist";\
+	fi
+
