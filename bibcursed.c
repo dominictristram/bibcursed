@@ -1399,12 +1399,23 @@ main(int argc, char *argv[])
 
    if (argc != 2)
     {
-      printf("%s requires a BibTeX file as its argument\n", argv[0]);
-      exit(1);
+      printf("Please enter a file name: ");
+      fgets(bibfile,100,stdin);
+      // Remove newline
+      strtok(bibfile,"\n");
     }
-
-   strcpy(bibfile, argv[1]);
-   fin = fopen(bibfile, "r");
+   else
+    {
+      strcpy(bibfile, argv[1]);
+    }
+   if (access(bibfile, R_OK) < 0)
+    {
+     fin = fopen(bibfile, "a+");
+    }
+   else
+    {
+      fin = fopen(bibfile, "r");
+    }
    if (fin == NULL)
     {
       printf("Can't open %s for reading\n", bibfile);
