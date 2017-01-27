@@ -37,10 +37,6 @@ like so:
 
     bibcursed thesis.bib
 
-If you are creating a new BibTeX file, create the empty file first (you
-could use the 'touch' command) and pass it to bibcursed as an argument as
-shown above.
-
 The main screen will appear. This will show the number of entries in the
 BibTeX database in the to right corner. Selectable options will be listed
 near the middle of the screen.
