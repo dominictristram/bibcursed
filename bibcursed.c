@@ -25,19 +25,32 @@
 #include <unistd.h>
 #include <curses.h>
 #include <string.h>
+#include <ctype.h>
 
 int rec_count;
 char bibfile[100];
 
+/* Function prototypes */
 void add_bold(char letter);
+int help();
+int search_menu();
+int search_file(int what);
+int add_entry();
+int delete_entry();
+int change_entry();
+int change_field(char *entry_name);
+int list_all_entries();
+int quit_prog();
+int config_options();
 void general_help();
+int field_menu(int priority, int field_set, char *fieldname);
 
 void setup_screen()
  {
    clear();
    move(0,0);
    attron(A_BOLD);
-   printw("%s", "bibcursed - Dominic Tristram, 1999 - 2007");
+   printw("%s", "bibcursed - Dominic Tristram, 1999 - 2025");
    attroff(A_BOLD);
    printw("%s %d","       Entries in bibliography :", rec_count);
  }
@@ -61,6 +74,9 @@ void menu()
    printw("%s","View or ");
    add_bold('C');
    printw("%s","hange an existing entry");
+   move(8,5);
+   add_bold('L');
+   printw("%s","ist all entries");
    move(11,5);
    add_bold('H');
    printw("%s","elp");
@@ -82,6 +98,7 @@ void menu()
       case 'a' : add_entry(); break;
       case 'd' : delete_entry(); break;
       case 'c' : change_entry(); break;
+      case 'l' : list_all_entries(); break;
       case 'o' : config_options(); break;
       case 'h' : help(); break;
       case 'q' : quit_prog(); break;
@@ -90,7 +107,7 @@ void menu()
  }
 
 
-help()
+int help()
  {
    char tmp_char, lch;
 
@@ -111,6 +128,7 @@ help()
    tmp_char = getch();
    lch = tolower(tmp_char);
    if (lch == 'h') general_help();
+   return 0;
  }
 
 
@@ -124,7 +142,7 @@ void general_help()
    move(5,5);
    printw("%s","with this distribution. Check the bibcursed website at:");
    move(7,8);
-   printw("%s","http://sourceforge.net/projects/bibcursed");
+   printw("%s","https://github.com/dominictristram/bibcursed");
    move(9,5);
    printw("%s","before sending any queries to me at:");
    move(11,8);
@@ -139,12 +157,13 @@ void general_help()
  }
 
 
-config_options()
+int config_options()
  {
    /* For future use */
+   return 0;
  }
 
-add_entry()
+int add_entry()
  {
    char ch, lch, entry_type, length;
    int use_author = 0, use_title = 0, use_journal = 0, use_year = 0;
@@ -851,10 +870,11 @@ add_entry()
    cbreak();
    ch = getch();
 
+   return 0;
  }
 
 
-delete_entry()
+int delete_entry()
  {
    char entry_name[100], str[100], str2[100], out_string[100], ch;
    char *key_name;
@@ -938,6 +958,8 @@ delete_entry()
       strcat(out_string, bibfile);
       system(out_string);
     }
+
+   return 0;
  }
 
 
@@ -960,7 +982,7 @@ int field_menu(int priority, int field_set, char *fieldname)
  }
 
 
-change_entry()
+int change_entry()
  {
    char entry_name[100], str[100], ch, lch;
    int record_found = 0, found_record = 0, print_pos = 6, record_count = 0;
@@ -1031,10 +1053,11 @@ change_entry()
    if (lch == 'c')
       change_field(entry_name);
 
+   return 0;
  }
 
 
-change_field(char *entry_name)
+int change_field(char *entry_name)
  {
    char ch, lch;
    char *field_name, *lfield_name, *key_name;
@@ -1182,15 +1205,16 @@ change_field(char *entry_name)
    cbreak();
    ch = getch();
  
+   return 0;
  }
 
 
-search_file(int what)
+int search_file(int what)
  {
    /* Search the file using the supplied option */
-   char search_term[100];
+   char search_term[100], search_term_lower[100];
    char *key_name;
-   char str[100], str2[100];
+   char str[100], str2[100], str2_lower[100];
    char ch;
    char *search_type, *search_type2;
    FILE *fin;
@@ -1199,6 +1223,7 @@ search_file(int what)
    int author_found;
    int total_entries = 0;
    int every = 0;
+   int i;
 
    setup_screen();
    move(4,5);
@@ -1228,6 +1253,12 @@ search_file(int what)
    refresh();
 
    getstr(search_term);
+   
+   /* Convert search term to lowercase */
+   for(i = 0; search_term[i]; i++) {
+     search_term_lower[i] = tolower(search_term[i]);
+   }
+   search_term_lower[i] = '\0';
 
    setup_screen();
    move(4,5);
@@ -1263,7 +1294,13 @@ search_file(int what)
             if ((strstr(str2, search_type) != NULL) || (strstr(str2, search_type2)
                != NULL) || every == 1)
              {
-               if (strstr(str2, search_term) != NULL)
+               /* Convert str2 to lowercase for comparison */
+               strcpy(str2_lower, str2);
+               for(i = 0; str2_lower[i]; i++) {
+                 str2_lower[i] = tolower(str2_lower[i]);
+               }
+               
+               if (strstr(str2_lower, search_term_lower) != NULL)
                 {
                   move(print_pos,5);
                   printw("%s", key_name);
@@ -1304,6 +1341,7 @@ search_file(int what)
    cbreak();
    ch = getch();
 
+   return 0;
  }
 
 
@@ -1316,7 +1354,7 @@ void add_bold(char letter)
  }
 
 
-search_menu()
+int search_menu()
  {
    /* Display the first search menu */
    int ch, lch, type;
@@ -1365,36 +1403,250 @@ search_menu()
 
    switch(lch)
     {
-      case 'a' : search_file(1); break;
-      case 'p' : search_file(2); break;
-      case 'l' : search_file(3); break;
-      case 't' : search_file(4); break;
-      case 'j' : search_file(5); break;
-      case 'u' : search_file(6); break;
-      case 'y' : search_file(7); break;
-      case 'e' : search_file(8); break;
-      case 'o' : search_file(9); break;
-      case 'q' : return(0); break;
-      default : menu(); break ;
+      case 'a' : return search_file(1);
+      case 'p' : return search_file(2);
+      case 'l' : return search_file(3);
+      case 't' : return search_file(4);
+      case 'j' : return search_file(5);
+      case 'u' : return search_file(6);
+      case 'y' : return search_file(7);
+      case 'e' : return search_file(8);
+      case 'o' : return search_file(9);
+      case 'q' : return 0;
+      default : menu(); return 0;
     }
  }
 
 
-quit_prog()
+int quit_prog()
  {
    endwin();
    exit(0);
+   return 0;  // This line will never be reached
  }
 
 
-main(int argc, char *argv[])
+int list_all_entries()
+ {
+   char str[100], str2[100], ch, lch;
+   FILE *fin;
+   int print_pos = 7;
+   int entries_displayed = 0;
+   int current_pos = 0;
+   int total_entries = 0;
+   int max_entries_per_page;
+   int is_last_record = 0;
+   char *key_name;
+   char *field, *value;
+   char *equals_pos;
+   int done = 0;
+
+   setup_screen();
+   move(4,5);
+   printw("%s","Loading entries...");
+   refresh();
+
+   fin = fopen(bibfile, "r");
+   if (fin == NULL)
+    {
+      move(6,5);
+      printw("%s %s","Error: Could not find file", bibfile);
+      refresh();
+      cbreak();
+      ch = getch();
+      return 0;
+    }
+
+   /* First count total entries */
+   while ((fgets(str, 99, fin)) > 0)
+    {
+      if (strchr(str, '@') != NULL)
+       {
+         total_entries++;
+       }
+    }
+   rewind(fin);
+
+   if (total_entries == 0)
+    {
+      move(6,5);
+      printw("%s","No entries found in the file");
+      refresh();
+      cbreak();
+      ch = getch();
+      fclose(fin);
+      return 0;
+    }
+
+   /* Calculate how many entries can fit on a page */
+   max_entries_per_page = (LINES - 8) / 3;  /* Conservative estimate */
+
+   while (!done)
+    {
+      setup_screen();
+      print_pos = 7;
+      entries_displayed = 0;
+
+      /* Display entries */
+      while ((fgets(str, 99, fin)) > 0)
+       {
+         if (strchr(str, '@') != NULL)
+          {
+            if (entries_displayed >= max_entries_per_page)
+             {
+               /* We've filled the page */
+               break;
+             }
+
+            /* Get entry key */
+            if (strchr(str, '{') != NULL)
+             {
+               key_name = (strchr(str, '{') + 1);
+             }
+            else
+             {
+               key_name = (strchr(str, '(') + 1);
+             }
+            str2[strlen(key_name)-2] = 0;  /* Remove closing brace/parenthesis */
+
+            /* Display entry type line */
+            move(print_pos, 5);
+            attron(A_BOLD);
+            printw("%s", str);
+            attroff(A_BOLD);
+            print_pos++;
+
+            /* Display fields */
+            while ((fgets(str, 99, fin)) > 0)
+             {
+               if (strchr(str, '@') != NULL)
+                {
+                  /* We've hit the next entry */
+                  ungetc('@', fin);  /* Put back the @ for next iteration */
+                  break;
+                }
+
+               if (print_pos >= LINES - 1)
+                {
+                  /* We've hit the bottom of the screen */
+                  break;
+                }
+
+               /* Format and display field */
+               equals_pos = strchr(str, '=');
+               if (equals_pos != NULL)
+                {
+                  /* Split into field and value */
+                  field = str;
+                  *equals_pos = 0;
+                  value = equals_pos + 1;
+
+                  /* Trim whitespace */
+                  while (*field == ' ') field++;
+                  while (*value == ' ') value++;
+
+                  /* Display field name in bold */
+                  move(print_pos, 5);
+                  attron(A_BOLD);
+                  printw("%-20s", field);
+                  attroff(A_BOLD);
+
+                  /* Display value */
+                  printw("%s", value);
+                }
+               else
+                {
+                  move(print_pos, 5);
+                  printw("%s", str);
+                }
+
+               print_pos++;
+             }
+
+            entries_displayed++;
+            print_pos++;  /* Add blank line between entries */
+          }
+       }
+
+      /* Update status line */
+      move(4, 5);
+      printw("Showing entries %d to %d of %d", 
+             current_pos + 1, 
+             current_pos + entries_displayed, 
+             total_entries);
+
+      /* Check if we're at the last record */
+      is_last_record = (current_pos + entries_displayed >= total_entries);
+      move(5, 5);
+      if (is_last_record)
+       {
+         printw("Last record - Press P for previous page, or Q to quit");
+       }
+      else
+       {
+         printw("Press N for next page, P for previous page, or Q to quit");
+       }
+
+      refresh();
+
+      /* Handle navigation */
+      while (1)
+       {
+         cbreak();
+         ch = getch();
+         lch = tolower(ch);
+
+         if (lch == 'n' && !is_last_record)
+          {
+            current_pos += entries_displayed;
+            break;
+          }
+         else if (lch == 'p' && current_pos > 0)
+          {
+            current_pos = (current_pos - max_entries_per_page > 0) ? 
+                         current_pos - max_entries_per_page : 0;
+            break;
+          }
+         else if (lch == 'q')
+          {
+            fclose(fin);
+            return 0;
+          }
+       }
+
+      /* Reset file position for next page */
+      rewind(fin);
+      /* Skip entries we've already shown */
+      for (int i = 0; i < current_pos; i++)
+       {
+         int found_entry = 0;
+         while ((fgets(str, 99, fin)) > 0)
+          {
+            if (strchr(str, '@') != NULL)
+             {
+               found_entry = 1;
+               break;
+             }
+          }
+         if (!found_entry || feof(fin)) {
+           fclose(fin);
+           return 0;  /* Return if we can't find enough entries or hit EOF */
+         }
+       }
+    }
+   fclose(fin);
+   return 0;
+ }
+
+
+int main(int argc, char *argv[])
  {
    int ch, i;
    char str[100];
    FILE *fin;
 
 
-   printf("Bibcursed 2.0.1 (c)1999-2007 Dominic Tristram. GPL applies\n");
+   printf("Bibcursed 2.0.1 (c)1999-2025 Dominic Tristram. GPL applies\n");
    sleep(1);
 
    if (argc != 2)
@@ -1435,4 +1687,5 @@ main(int argc, char *argv[])
    while (1 != 0)
       menu();
 
+   return 0;
  }

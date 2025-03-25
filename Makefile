@@ -10,7 +10,7 @@ MANDIR=/usr/man/man1
 CURSES=ncurses
 
 bibcursed: bibcursed.c
-	gcc -O -o bibcursed bibcursed.c -l$(CURSES)
+	gcc -O -o bibcursed bibcursed.c -l$(CURSES) -lc
 
 install: bibcursed
 	@if [ -d $(INSTDIR) ]; \
