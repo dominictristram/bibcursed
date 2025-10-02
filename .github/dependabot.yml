@@ -1,0 +1,56 @@
+# Dependabot configuration for bibcursed
+# This file enables automated dependency updates for various package managers
+
+version: 2
+updates:
+  # Monitor GitHub Actions for updates
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+    open-pull-requests-limit: 5
+    reviewers:
+      - "dominic"
+    assignees:
+      - "dominic"
+
+  # Monitor Docker dependencies if Dockerfile exists
+  - package-ecosystem: "docker"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+    open-pull-requests-limit: 3
+    reviewers:
+      - "dominic"
+    assignees:
+      - "dominic"
+
+  # Monitor Python dependencies if requirements files are added
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+    open-pull-requests-limit: 3
+    reviewers:
+      - "dominic"
+    assignees:
+      - "dominic"
+
+  # Monitor system packages for C dependencies (if applicable)
+  - package-ecosystem: "gitsubmodule"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+    open-pull-requests-limit: 2
+    reviewers:
+      - "dominic"
+    assignees:
+      - "dominic"
