@@ -12,9 +12,9 @@ updates:
       time: "09:00"
     open-pull-requests-limit: 5
     reviewers:
-      - "dominic"
+      - "dominictristram"
     assignees:
-      - "dominic"
+      - "dominictristram"
 
   # Monitor Docker dependencies if Dockerfile exists
   - package-ecosystem: "docker"
@@ -25,9 +25,9 @@ updates:
       time: "09:00"
     open-pull-requests-limit: 3
     reviewers:
-      - "dominic"
+      - "dominictristram"
     assignees:
-      - "dominic"
+      - "dominictristram"
 
   # Monitor Python dependencies if requirements files are added
   - package-ecosystem: "pip"
@@ -38,9 +38,9 @@ updates:
       time: "09:00"
     open-pull-requests-limit: 3
     reviewers:
-      - "dominic"
+      - "dominictristram"
     assignees:
-      - "dominic"
+      - "dominictristram"
 
   # Monitor system packages for C dependencies (if applicable)
   - package-ecosystem: "gitsubmodule"
@@ -51,6 +51,6 @@ updates:
       time: "09:00"
     open-pull-requests-limit: 2
     reviewers:
-      - "dominic"
+      - "dominictristram"
     assignees:
-      - "dominic"
+      - "dominictristram"
